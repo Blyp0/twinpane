@@ -33,6 +33,12 @@ any other product.
 
 On macOS, `Ctrl` is `⌘`.
 
+## Download (macOS)
+
+Don't want to build it? Grab the ready-made installer: **[Twinpane.dmg](https://github.com/Blyp0/twinpane/releases/latest/download/Twinpane.dmg)**
+(or see the [releases page](https://github.com/Blyp0/twinpane/releases)). Open the DMG and drag Twinpane to
+Applications. The app is unsigned, so the first time, right-click it and choose **Open**.
+
 ## Build and run
 
 You need [Rust](https://rustup.rs) (1.77 or newer). Then the desktop app:
