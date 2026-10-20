@@ -1,0 +1,16 @@
+[package]
+name = "twinpane-core"
+version = "0.1.0"
+edition = "2021"
+description = "File engine for Twinpane: listing, safe file operations, undo, metadata, rename, search, sync."
+license = "MIT"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+regex = "1"
+kamadak-exif = "0.6"
+
+[dev-dependencies]
+tempfile = "3"

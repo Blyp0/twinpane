@@ -1,0 +1,11 @@
+[package]
+name = "twinpane-dev"
+version = "0.1.0"
+edition = "2021"
+description = "Sandboxed browser preview of the Twinpane UI, running the real engine. For development and trying the UI without the desktop shell."
+license = "MIT"
+
+[dependencies]
+twinpane-core = { path = "../core" }
+tiny_http = "0.12"
+serde_json = "1"

@@ -1,0 +1,8 @@
+{
+  "name": "twinpane-ui-tests",
+  "private": true,
+  "type": "module",
+  "description": "End-to-end UI tests: drive the browser preview with a headless Chrome and check the real file system.",
+  "scripts": { "test": "node ui.test.mjs" },
+  "dependencies": { "puppeteer-core": "^24" }
+}
