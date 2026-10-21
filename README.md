@@ -19,6 +19,7 @@ any other product.
 | **Batch rename** | A chain of rules: find/replace (plain or regex with `$1` groups), insert text, change case, trim. Tokens such as `{n:3}`, `{taken:%Y%m%d_%H%M%S}`, `{camera}`, `{parent}`. A live preview highlights what changes and flags conflicts (duplicates, name already exists, missing EXIF data). It refuses to apply while any conflict remains. Swapping two names works. |
 | **Find** | Name as text, wildcard or regex; type, extension, size, modified date, **date taken**; search inside files. Results open in a tab you can copy, move, rename and delete from. |
 | **Compare and sync** | Update, Mirror or Two-way. A dry-run table shows exactly what will happen first. |
+| **Auto-sync** | In the Compare and sync window, choose **Keep in sync automatically**. Twinpane then re-runs that sync every few seconds in the background until you click **Auto-sync on · Stop** in the toolbar. Each automatic run is one undo step, and Mirror mode asks you to confirm first. |
 | **Safety** | Nothing is permanently deleted. Deletes, overwritten files and undone copies go to a holding area. Every operation, including a whole sync or batch rename, is **one undo step**, and undo survives restarting the app. |
 
 ### Shortcuts

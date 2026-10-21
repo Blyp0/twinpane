@@ -778,9 +778,66 @@ async function doFind() {
 async function doSync() {
   const a = active().tab, b = other().tab;
   if (a.kind !== 'dir' || b.kind !== 'dir') { toast('Open a folder in each pane to compare them.'); return; }
-  const changed = await dlg.syncDialog({ left: a.path, right: b.path });
+  const { changed, auto } = await dlg.syncDialog({ left: a.path, right: b.path });
   active().focusList();
+  if (auto) startAutoSync(auto);
   if (changed) await refreshAll();
+}
+
+// ---- auto sync ----------------------------------------------------------------
+const AUTO_SYNC_MS = 3000;
+let autoSync = null;
+
+function updateAutoSyncUI() {
+  const b = document.getElementById('autosync-chip');
+  if (!b) return;
+  b.hidden = !autoSync;
+  if (autoSync) b.title = `Auto-sync (${autoSync.mode}): ${autoSync.left} \u2192 ${autoSync.right}. Click to stop.`;
+}
+
+function startAutoSync(cfg) {
+  stopAutoSync(false);
+  autoSync = { ...cfg, timer: 0 };
+  updateAutoSyncUI();
+  toast('Auto-sync is on. Stop it from the toolbar.', 'ok');
+  scheduleAutoSync(0);
+}
+
+function stopAutoSync(announce = true) {
+  if (!autoSync) return;
+  clearTimeout(autoSync.timer);
+  autoSync = null;
+  updateAutoSyncUI();
+  if (announce) toast('Auto-sync stopped.');
+}
+
+function scheduleAutoSync(ms = AUTO_SYNC_MS) {
+  if (!autoSync) return;
+  const cfg = autoSync;
+  cfg.timer = setTimeout(() => autoSyncTick(cfg), ms);
+}
+
+async function autoSyncTick(cfg) {
+  if (autoSync !== cfg) return;
+  // Don't change files under the user while a dialog is open.
+  if (document.querySelector('dialog[open]')) { scheduleAutoSync(); return; }
+  try {
+    const res = await call('compare', {
+      left: cfg.left, right: cfg.right, mode: cfg.mode,
+      options: { method: cfg.method, mtime_tolerance_secs: 2, include_hidden: true },
+    });
+    if (autoSync !== cfg) return;
+    if (res.plan.actions.length) {
+      await call('sync_apply', { left: cfg.left, right: cfg.right, plan: res.plan });
+      toast(`Auto-synced ${plural(res.plan.actions.length, 'action')}.`, 'ok', 2500);
+      await refreshAll();
+    }
+  } catch (e) {
+    stopAutoSync(false);
+    toast(`Auto-sync stopped: ${e.message || e}`, 'error', 8000);
+    return;
+  }
+  scheduleAutoSync();
 }
 
 function toggleHidden() {
@@ -838,6 +895,9 @@ function buildToolbar() {
     sep(),
     btn('undo', 'Undo', 'Ctrl+Z', 'undo', doUndo),
     el('span', { class: 'grow' }),
+    el('button', {
+      class: 'tb', id: 'autosync-chip', hidden: true, onclick: () => stopAutoSync(),
+    }, icon('sync'), el('span', {}, 'Auto-sync on \u00b7 Stop')),
     el('label', { class: 'chk' },
       el('input', { type: 'checkbox', id: 'opt-hidden', checked: state.showHidden, onchange: toggleHidden }),
       'Hidden files'),

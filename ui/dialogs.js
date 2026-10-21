@@ -515,6 +515,7 @@ export function syncDialog({ left, right }) {
   let seq = 0;
   let plan = null;
   let changed = false;
+  let auto = null;
 
   const leftEl = el('div', { class: 'pathline' });
   const rightEl = el('div', { class: 'pathline' });
@@ -533,6 +534,8 @@ export function syncDialog({ left, right }) {
   const table = el('div', { class: 'sync-table', role: 'table' });
   const summary = el('span', { class: 'summary', role: 'status' }, 'Comparing…');
   const run = btn('Run sync', { kind: 'primary', disabled: true });
+  const autoBtn = btn('Keep in sync automatically');
+  autoBtn.title = 'Close this window and keep re-running this sync every few seconds until you stop it';
 
   const paint = () => { leftEl.textContent = L; rightEl.textContent = R; };
 
@@ -543,7 +546,7 @@ export function syncDialog({ left, right }) {
       el('div', {}, el('span', { class: 'fld-l' }, 'Right'), rightEl)),
     el('div', { class: 'sync-opts' }, mode, method),
     modeHelp, banner, table);
-  foot.append(summary, el('span', { class: 'grow' }), btn('Close', { onclick: () => d.close(changed ? 'changed' : '') }), run);
+  foot.append(summary, el('span', { class: 'grow' }), btn('Close', { onclick: () => d.close(changed ? 'changed' : '') }), autoBtn, run);
 
   const side = (e) => (e ? `${e.kind === 'Dir' ? 'folder' : formatSize(e.size)}  ${formatDate(e.modified)}` : '');
 
@@ -602,6 +605,19 @@ export function syncDialog({ left, right }) {
     run.dataset.deletes = String(dels);
   }
 
+  autoBtn.addEventListener('click', async () => {
+    const ok = await confirmDialog({
+      title: 'Keep these folders in sync automatically?',
+      body: el('p', {}, mode.value === 'Mirror'
+        ? 'Every few seconds, Twinpane will make the right folder identical to the left, including removing items that exist only on the right. Removed items go to the holding area and each automatic sync is one undo step. Stop it any time from the toolbar.'
+        : 'Every few seconds, Twinpane will run this sync if anything changed. Each automatic sync is one undo step. Stop it any time from the toolbar.'),
+      confirmLabel: 'Start auto-sync', danger: mode.value === 'Mirror',
+    });
+    if (!ok) return;
+    auto = { left: L, right: R, mode: mode.value, method: method.value };
+    d.close('auto');
+  });
+
   run.addEventListener('click', async () => {
     const dels = Number(run.dataset.deletes || 0);
     if (dels > 0) {
@@ -633,5 +649,5 @@ export function syncDialog({ left, right }) {
   paint();
   help();
   compare();
-  return openDialog(d, { onOpen: () => mode.focus() }).then((v) => v === 'changed' || changed);
+  return openDialog(d, { onOpen: () => mode.focus() }).then(() => ({ changed, auto }));
 }
