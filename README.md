@@ -38,7 +38,12 @@ On macOS, `Ctrl` is `⌘`.
 
 Don't want to build it? Grab the ready-made installer: **[Twinpane.dmg](https://github.com/Blyp0/twinpane/releases/latest/download/Twinpane.dmg)**
 (or see the [releases page](https://github.com/Blyp0/twinpane/releases)). Open the DMG and drag Twinpane to
-Applications. The app is unsigned, so the first time, right-click it and choose **Open**.
+Applications. The app is not notarized by Apple, so macOS blocks it the first time. Either open
+**System Settings > Privacy & Security** and click **Open Anyway**, or run this once in Terminal:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/Twinpane.app
+```
 
 ## Build and run
 
