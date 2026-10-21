@@ -37,13 +37,25 @@ On macOS, `Ctrl` is `⌘`.
 ## Download (macOS)
 
 Don't want to build it? Grab the ready-made installer: **[Twinpane.dmg](https://github.com/Blyp0/twinpane/releases/latest/download/Twinpane.dmg)**
-(or see the [releases page](https://github.com/Blyp0/twinpane/releases)). Open the DMG and drag Twinpane to
-Applications. The app is not notarized by Apple, so macOS blocks it the first time. Either open
-**System Settings > Privacy & Security** and click **Open Anyway**, or run this once in Terminal:
+(or see the [releases page](https://github.com/Blyp0/twinpane/releases)). It is built for Apple Silicon Macs.
 
-```sh
-xattr -dr com.apple.quarantine /Applications/Twinpane.app
-```
+### Install
+
+1. Open `Twinpane.dmg` and drag **Twinpane** into **Applications**.
+2. Open Twinpane. macOS will probably say it **"could not verify Twinpane is free of malware"** or that it
+   is damaged. This is expected: the app is open source but is not notarized by Apple (that needs a paid
+   Apple Developer account), so macOS blocks every app it has not scanned. It does not mean anything was found.
+3. Allow it once, using either method:
+   * **Settings:** click **Done** on the warning, open **System Settings > Privacy & Security**, scroll down
+     to the message about Twinpane and click **Open Anyway**, then confirm.
+   * **Terminal:** run this, then open the app again:
+
+     ```sh
+     xattr -dr com.apple.quarantine /Applications/Twinpane.app
+     ```
+
+After that it opens normally every time. If you would rather not trust a download, the full source is in this
+repository and you can build it yourself (below).
 
 ## Build and run
 
