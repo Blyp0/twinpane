@@ -8,6 +8,40 @@ sortable **EXIF Date Taken** columns, **regex batch rename**, a **regex finder**
 This is an original implementation. It copies no code, assets, names or interface design from
 any other product.
 
+<p align="center">
+  <a href="https://github.com/Blyp0/twinpane/releases/latest/download/Twinpane.dmg">
+    <img src="https://img.shields.io/badge/%E2%AC%87%20Download%20Twinpane%20for%20macOS-.dmg-2563eb?style=for-the-badge&logo=apple&logoColor=white" alt="Download Twinpane for macOS" height="56">
+  </a>
+</p>
+
+<p align="center">
+  <b>Apple Silicon Macs</b> &nbsp;·&nbsp; free &nbsp;·&nbsp; open source &nbsp;·&nbsp;
+  <a href="https://github.com/Blyp0/twinpane/releases">all releases</a>
+</p>
+
+## Install in 3 steps
+
+1. **Download** the DMG with the button above and open it.
+2. **Drag Twinpane into Applications**, then open it.
+3. **If macOS blocks it, allow it once** (see the box below). After that it opens normally every time.
+
+> [!IMPORTANT]
+> ### macOS says "Apple could not verify Twinpane is free of malware" or "Twinpane is damaged"?
+> This is expected and is **not** a sign anything is wrong. Twinpane is open source but is not notarized by
+> Apple (that needs a paid developer account), so macOS blocks every app it has not scanned.
+> Fix it in 10 seconds, with **either** method:
+>
+> **Method 1: Terminal (fastest).** Paste this, press Return, then open Twinpane again:
+>
+> ```sh
+> xattr -dr com.apple.quarantine /Applications/Twinpane.app
+> ```
+>
+> **Method 2: Settings.** Click **Done** on the warning, open **System Settings > Privacy & Security**,
+> scroll to the message about Twinpane, click **Open Anyway**, and confirm.
+>
+> Rather not trust a download? Everything is in this repository, and you can [build it yourself](#build-and-run).
+
 ![Desktop app](docs/screenshots/desktop-app.png)
 
 ## What it does
@@ -33,29 +67,6 @@ any other product.
 | `Ctrl+H` hidden files | `Space` toggle select | `Shift+↑/↓` extend | type to jump |
 
 On macOS, `Ctrl` is `⌘`.
-
-## Download (macOS)
-
-Don't want to build it? Grab the ready-made installer: **[Twinpane.dmg](https://github.com/Blyp0/twinpane/releases/latest/download/Twinpane.dmg)**
-(or see the [releases page](https://github.com/Blyp0/twinpane/releases)). It is built for Apple Silicon Macs.
-
-### Install
-
-1. Open `Twinpane.dmg` and drag **Twinpane** into **Applications**.
-2. Open Twinpane. macOS will probably say it **"could not verify Twinpane is free of malware"** or that it
-   is damaged. This is expected: the app is open source but is not notarized by Apple (that needs a paid
-   Apple Developer account), so macOS blocks every app it has not scanned. It does not mean anything was found.
-3. Allow it once, using either method:
-   * **Settings:** click **Done** on the warning, open **System Settings > Privacy & Security**, scroll down
-     to the message about Twinpane and click **Open Anyway**, then confirm.
-   * **Terminal:** run this, then open the app again:
-
-     ```sh
-     xattr -dr com.apple.quarantine /Applications/Twinpane.app
-     ```
-
-After that it opens normally every time. If you would rather not trust a download, the full source is in this
-repository and you can build it yourself (below).
 
 ## Build and run
 
